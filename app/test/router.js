@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const { test } = require('./controller')
+const { symbolPrice, minQty, amountToQuantity } = require('./controller')
 
-router.get('/test', test)
+router.get('/symbolPrice', symbolPrice)
+router.get('/minQty', minQty)
+router.post('/amountToQuantity', amountToQuantity)
 
 module.exports = router
