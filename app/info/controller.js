@@ -1,4 +1,4 @@
-const { Spot } = require('@binance/connector')
+const { Spot, WebsocketStream, WebsocketAPI } = require('@binance/connector')
 const { binanceApiKeyTest, binanceSecretKeyTest } = require('../../config')
 
 const test = new Spot(binanceApiKeyTest, binanceSecretKeyTest, {
@@ -13,6 +13,16 @@ module.exports = {
             })
         } catch (error) {
             res.status(500).json({ message: 'Internal Server Error' });
+        }
+    },
+    listenOrders: async (req, res) => {
+        try {
+            
+        } catch (error) {
+            res.status(500).json({
+                message: "Internal Server Error",
+                error: error.response?.data ?? error.message ?? "Unknown Error"
+            })
         }
     }
 }
