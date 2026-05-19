@@ -7,6 +7,27 @@ const test = new Spot(binanceApiKeyTest, binanceSecretKeyTest, {
 })
 
 module.exports = {
+    placeMarketOrderSell: async(req, res) => {
+        try {
+            const { amount } = req.body
+
+            const minNotValueCount = await minQty("BTCUSDT")
+            const price = await symbolPrice("BTCUSDT")
+            const quantity = await amountToQuantity(amount, price, minNotValueCount)
+
+            const response = await test.newOrder('BTCUSDT', 'SELL', 'MARKET', {
+                quantity: quantity,
+            })
+            res.status(200).json({
+                data: response.data
+            })
+        } catch (error) {
+            res.status(500).json({ 
+                message: "Internal Server Error",
+                error: error.response?.data || error.message
+            });
+        }
+    },
     placeMarketOrderBuy: async(req, res) => {
         try {
             const { amount } = req.body
@@ -15,10 +36,7 @@ module.exports = {
             const price = await symbolPrice("BTCUSDT")
             const quantity = await amountToQuantity(amount, price, minNotValueCount)
 
-            const client = new Spot(binanceApiKeyTest, binanceSecretKeyTest, {
-                baseURL: 'https://testnet.binance.vision'
-            })
-            const response = await client.newOrder('BTCUSDT', 'BUY', 'MARKET', {
+            const response = await test.newOrder('BTCUSDT', 'BUY', 'MARKET', {
                 quantity: quantity,
             })
             res.status(200).json({
