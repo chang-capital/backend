@@ -55,5 +55,30 @@ module.exports = {
                 error: error.response?.data || error.message
             }); 
         }
+    },
+    placeLimitOrderBuy: async(req, res) => {
+        try {
+            const { amount, price } = req.body
+
+            const minNotValueCount = await minQty("BTCUSDT")
+            const quantity = await amountToQuantity(amount, price, minNotValueCount)
+
+            const client = new Spot(binanceApiKeyTest, binanceSecretKeyTest, {
+                baseURL: 'https://testnet.binance.vision'
+            })
+            const response = await client.newOrder('BTCUSDT', 'BUY', 'LIMIT', {
+                price: price,
+                quantity: quantity,
+                timeInForce: 'GTC'
+            })
+            res.status(200).json({
+                data: response.data
+            })
+        } catch (error) {
+            res.status(500).json({ 
+                message: "Internal Server Error",
+                error: error.response?.data || error.message
+            }); 
+        }
     }
 }
