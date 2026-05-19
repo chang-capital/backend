@@ -7,7 +7,7 @@ const test = new Spot(binanceApiKeyTest, binanceSecretKeyTest, {
 })
 
 module.exports = {
-    placeMarketOrder: async(req, res) => {
+    placeMarketOrderBuy: async(req, res) => {
         try {
             const { amount } = req.body
 
