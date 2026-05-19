@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const {  } = require('./controller')
+const { placeMarketOrder } = require('./controller')
 
-// router.get('/test', test)
+router.post('/place-market-order', placeMarketOrder)
 
 module.exports = router
