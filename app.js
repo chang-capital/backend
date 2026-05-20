@@ -8,6 +8,7 @@ const testRouter = require('./app/test/router');
 const infoRouter = require('./app/info/router');
 const spotRouter = require('./app/spot/router');
 const strategyRouter = require('./app/strategy/router');
+const botRouter = require('./app/bot/router');
 
 const app = express();
 app.use(cors());
@@ -22,5 +23,6 @@ app.use('/', testRouter);
 app.use('/info', infoRouter);
 app.use('/spot', spotRouter);
 app.use('/strategy', strategyRouter);
+app.use('/bot', botRouter);
 
 module.exports = app;
