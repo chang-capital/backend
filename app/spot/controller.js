@@ -6,7 +6,58 @@ const test = new Spot(binanceApiKeyTest, binanceSecretKeyTest, {
     baseURL: 'https://testnet.binance.vision'
 })
 
+const marketOrderSell = async(amount) => {
+    const minNotValueCount = await minQty("BTCUSDT")
+    const price = await symbolPrice("BTCUSDT")
+    const quantity = await amountToQuantity(amount, price, minNotValueCount)
+
+    const response = await test.newOrder('BTCUSDT', 'SELL', 'MARKET', {
+        quantity: quantity,
+    })
+    return response.data
+}
+
+const marketOrderBuy = async(amount) => {
+    const minNotValueCount = await minQty("BTCUSDT")
+    const price = await symbolPrice("BTCUSDT")
+    const quantity = await amountToQuantity(amount, price, minNotValueCount)
+
+    const response = await test.newOrder('BTCUSDT', 'BUY', 'MARKET', {
+        quantity: quantity,
+    })
+    return response.data
+}
+
+const limitOrderSell = async(amount, price) => {
+    const minNotValueCount = await minQty("BTCUSDT")
+    const quantity = await amountToQuantity(amount, price, minNotValueCount)
+
+    const response = await test.newOrder('BTCUSDT', 'SELL', 'LIMIT', {
+        price: price,
+        quantity: quantity,
+        timeInForce: 'GTC'
+    })
+    return response.data
+}
+
+const limitOrderBuy = async(amount, price) => {
+    const minNotValueCount = await minQty("BTCUSDT")
+    const quantity = await amountToQuantity(amount, price, minNotValueCount)
+
+    const response = await test.newOrder('BTCUSDT', 'BUY', 'LIMIT', {
+        price: price,
+        quantity: quantity,
+        timeInForce: 'GTC'
+    })
+    return response.data
+}
+
 module.exports = {
+    marketOrderSell,
+    marketOrderBuy,
+    limitOrderSell,
+    limitOrderBuy,
+    // route handler
     placeMarketOrderSell: async(req, res) => {
         try {
             const { amount } = req.body
@@ -56,10 +107,7 @@ module.exports = {
             const minNotValueCount = await minQty("BTCUSDT")
             const quantity = await amountToQuantity(amount, price, minNotValueCount)
 
-            const client = new Spot(binanceApiKeyTest, binanceSecretKeyTest, {
-                baseURL: 'https://testnet.binance.vision'
-            })
-            const response = await client.newOrder('BTCUSDT', 'SELL', 'LIMIT', {
+            const response = await test.newOrder('BTCUSDT', 'SELL', 'LIMIT', {
                 price: price,
                 quantity: quantity,
                 timeInForce: 'GTC'
@@ -81,10 +129,7 @@ module.exports = {
             const minNotValueCount = await minQty("BTCUSDT")
             const quantity = await amountToQuantity(amount, price, minNotValueCount)
 
-            const client = new Spot(binanceApiKeyTest, binanceSecretKeyTest, {
-                baseURL: 'https://testnet.binance.vision'
-            })
-            const response = await client.newOrder('BTCUSDT', 'BUY', 'LIMIT', {
+            const response = await test.newOrder('BTCUSDT', 'BUY', 'LIMIT', {
                 price: price,
                 quantity: quantity,
                 timeInForce: 'GTC'
