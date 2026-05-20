@@ -7,6 +7,7 @@ const cors = require('cors');
 const testRouter = require('./app/test/router');
 const infoRouter = require('./app/info/router');
 const spotRouter = require('./app/spot/router');
+const strategyRouter = require('./app/strategy/router');
 
 const app = express();
 app.use(cors());
@@ -20,5 +21,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', testRouter);
 app.use('/info', infoRouter);
 app.use('/spot', spotRouter);
+app.use('/strategy', strategyRouter);
 
 module.exports = app;

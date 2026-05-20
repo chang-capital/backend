@@ -1,6 +1,6 @@
 const router = express.Router()
-const {  } = require('./controller')
+const { getRsi } = require('./controller')
 
-router.get('/',)
+router.get('/rsi', getRsi)
 
 module.exports = router
