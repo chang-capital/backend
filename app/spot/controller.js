@@ -11,8 +11,18 @@ const marketOrderSell = async(amount) => {
     const price = await symbolPrice("BTCUSDT")
     const quantity = await amountToQuantity(amount, price, minNotValueCount)
 
+    const accountInfo = await test.account()
+    const btcBalance = accountInfo.data.balances.find(b => b.asset === 'BTC')
+    const availableQty = parseFloat(btcBalance?.free ?? 0)
+
+    const safeQuantity = Math.min(quantity, availableQty)
+    if (safeQuantity <= 0) {
+        console.log('No BTC balance to sell')
+        return null
+    }
+
     const response = await test.newOrder('BTCUSDT', 'SELL', 'MARKET', {
-        quantity: quantity,
+        quantity: safeQuantity,
     })
     return response.data
 }
