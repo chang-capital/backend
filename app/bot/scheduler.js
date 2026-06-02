@@ -1,7 +1,7 @@
 const cron = require('node-cron')
 const { calculateRsi } = require("../strategy/controller")
 const { symbolPrice } = require("../utils")
-const { marketOrderSell, marketOrderBuy, limitOrderSell, limitOrderBuy } = require("../spot/controller")
+const { marketOrderSell, marketOrderBuy } = require("../spot/controller")
 
 let botTaskRsi = null
 
@@ -18,8 +18,16 @@ const startBotRsi = () => {
 
             if (rsi < 30) {
                 console.log('RSI oversold → BUY!')
+                await marketOrderBuy(100)
+            } else if(rsi < 20) {
+                console.log('RSI extremely oversold → BUY!')
+                await marketOrderBuy(200)
             } else if (rsi > 70) {
                 console.log('RSI overbought → SELL!')
+                await marketOrderSell(100)
+            } else if(rsi > 80) {
+                console.log('RSI extremely overbought → SELL!')
+                await marketOrderSell(200)
             } else {
                 console.log('RSI normal → HOLD')
             }
